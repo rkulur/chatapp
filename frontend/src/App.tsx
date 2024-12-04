@@ -22,7 +22,7 @@ function App() {
   const [showChat, setShowChat] = useState(false);
 
   const socket = useMemo(() => {
-    return io("http://localhost:3000");
+    return io(import.meta.env.VITE_SOCKET_PATH);
   }, []);
 
   const sendMessage = () => {
