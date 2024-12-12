@@ -20,7 +20,7 @@ io.on("connection", (socket) => {
 
   socket.on("sendMessage", (data) => {
     console.log(`Data from ${data.username}`, data.message);
-    socket.to(data.roomId).emit("recieveMessage", data);
+    socket.to(data.roomId).emit("receiveMessage", data);
   });
 
   socket.on("disconnect", () => {

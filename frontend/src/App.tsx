@@ -22,27 +22,32 @@ function App() {
   const [showChat, setShowChat] = useState(false);
 
   const socket = useMemo(() => {
-    return io(import.meta.env.VITE_SOCKET_PATH);
+    const socketConnectionPath = import.meta.env.VITE_SOCKET_PATH;
+    if (!socketConnectionPath) return null;
+    return io(socketConnectionPath);
   }, []);
 
   const sendMessage = () => {
     if (message === "") return;
     setChats((prev) => [...prev, { roomId, username, message }]);
-    socket.emit("sendMessage", { roomId, username, message });
+    socket?.emit("sendMessage", { roomId, username, message });
     setMessage("");
   };
 
   const handleJoinRoom = (e: FormEvent<HTMLFormElement>) => {
     if (!formElem || !formElem.current) return;
     e.preventDefault();
-    socket.emit("joinRoom", { username, roomId });
+    socket?.emit("joinRoom", { username, roomId });
     setShowChat(true);
   };
 
   useEffect(() => {
-    socket.on("recieveMessage", (data) => {
+    socket?.on("receiveMessage", (data) => {
+      console.log("data", data);
+      console.log("sheesh", chats.pop());
       setChats((prev) => [...prev, data]);
     });
+    console.log(chats);
   }, [socket]);
 
   return (
